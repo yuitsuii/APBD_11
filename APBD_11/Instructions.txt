@@ -1,69 +1,98 @@
+-- Drop tables if they already exist (optional for re-runs)
+DROP TABLE IF EXISTS Prescription_Medicament;
+DROP TABLE IF EXISTS Prescription;
+DROP TABLE IF EXISTS Medicament;
+DROP TABLE IF EXISTS Patient;
+DROP TABLE IF EXISTS Doctor;
+
+-- Doctor
 CREATE TABLE Doctor (
-    IdDoctor INT PRIMARY KEY IDENTITY,
-    FirstName NVARCHAR(100) NOT NULL,
-    LastName NVARCHAR(100) NOT NULL,
-    Email NVARCHAR(100) NOT NULL
+                        IdDoctor INT PRIMARY KEY IDENTITY,
+                        FirstName NVARCHAR(100) NOT NULL,
+                        LastName NVARCHAR(100) NOT NULL,
+                        Email NVARCHAR(100) NOT NULL
 );
 
+-- Patient
 CREATE TABLE Patient (
-    IdPatient INT PRIMARY KEY IDENTITY,
-    FirstName NVARCHAR(100) NOT NULL,
-    LastName NVARCHAR(100) NOT NULL,
-    Birthdate DATE NOT NULL
+                         IdPatient INT PRIMARY KEY IDENTITY,
+                         FirstName NVARCHAR(100) NOT NULL,
+                         LastName NVARCHAR(100) NOT NULL,
+                         Birthdate DATE NOT NULL
 );
 
+-- Medicament
 CREATE TABLE Medicament (
-    IdMedicament INT PRIMARY KEY IDENTITY,
-    Name NVARCHAR(100) NOT NULL,
-    Description NVARCHAR(100) NOT NULL,
-    Type NVARCHAR(100) NOT NULL
+                            IdMedicament INT PRIMARY KEY IDENTITY,
+                            Name NVARCHAR(100) NOT NULL,
+                            Description NVARCHAR(100) NOT NULL,
+                            Type NVARCHAR(100) NOT NULL
 );
 
+-- Prescription
 CREATE TABLE Prescription (
-    IdPrescription INT PRIMARY KEY IDENTITY,
-    Date DATE NOT NULL,
-    DueDate DATE NOT NULL,
-    IdPatient INT NOT NULL FOREIGN KEY REFERENCES Patient(IdPatient),
-    IdDoctor INT NOT NULL FOREIGN KEY REFERENCES Doctor(IdDoctor)
+                              IdPrescription INT PRIMARY KEY IDENTITY,
+                              Date DATE NOT NULL,
+                              DueDate DATE NOT NULL,
+                              IdPatient INT NOT NULL,
+                              IdDoctor INT NOT NULL,
+                              FOREIGN KEY (IdPatient) REFERENCES Patient(IdPatient),
+                              FOREIGN KEY (IdDoctor) REFERENCES Doctor(IdDoctor)
 );
 
+-- Prescription_Medicament
 CREATE TABLE Prescription_Medicament (
-    IdPrescription INT NOT NULL,
-    IdMedicament INT NOT NULL,
-    Dose INT,
-    Details NVARCHAR(100),
-    PRIMARY KEY (IdPrescription, IdMedicament),
-    FOREIGN KEY (IdPrescription) REFERENCES Prescription(IdPrescription),
-    FOREIGN KEY (IdMedicament) REFERENCES Medicament(IdMedicament)
+                                         IdPrescription INT NOT NULL,
+                                         IdMedicament INT NOT NULL,
+                                         Dose INT,
+                                         Details NVARCHAR(100),
+                                         PRIMARY KEY (IdPrescription, IdMedicament),
+                                         FOREIGN KEY (IdPrescription) REFERENCES Prescription(IdPrescription),
+                                         FOREIGN KEY (IdMedicament) REFERENCES Medicament(IdMedicament)
 );
 
 
-
+-- Doctors
 INSERT INTO Doctor (FirstName, LastName, Email)
 VALUES
-('John', 'Smith', 'john.smith@clinic.com'),
-('Anna', 'Taylor', 'anna.taylor@clinic.com'),
-('Robert', 'Jones', 'robert.jones@clinic.com');
+    ('John', 'Smith', 'john.smith@clinic.com'),
+    ('Anna', 'Taylor', 'anna.taylor@clinic.com');
 
+-- Patients
 INSERT INTO Patient (FirstName, LastName, Birthdate)
 VALUES
-('Emily', 'Clark', '1985-04-12'),
-('Michael', 'Brown', '1990-10-25'),
-('Sarah', 'Davis', '1978-03-18');
+    ('Emily', 'Clark', '1985-04-12'),
+    ('Michael', 'Brown', '1990-10-25');
 
+-- Medicaments
 INSERT INTO Medicament (Name, Description, Type)
 VALUES
-('Aspirin', 'Pain reliever', 'Tablet'),
-('Amoxicillin', 'Antibiotic', 'Capsule'),
-('Ibuprofen', 'Anti-inflammatory', 'Tablet');
+    ('Aspirin', 'Pain reliever', 'Tablet'),
+    ('Amoxicillin', 'Antibiotic', 'Capsule'),
+    ('Ibuprofen', 'Anti-inflammatory', 'Tablet');
 
+-- Prescriptions
 INSERT INTO Prescription (Date, DueDate, IdPatient, IdDoctor)
 VALUES
-('2023-10-01', '2023-10-10', 1, 1),
-('2023-10-02', '2023-10-12', 2, 2);
+    ('2023-10-01', '2023-10-10', 1, 1),
+    ('2023-10-02', '2023-10-12', 2, 2);
 
+-- Prescription_Medicament
 INSERT INTO Prescription_Medicament (IdPrescription, IdMedicament, Dose, Details)
 VALUES
-(1, 1, 2, 'Take twice daily'),
-(1, 2, 1, 'Once before bed'),
-(2, 3, 3, 'Every 8 hours');
+    (1, 1, 2, 'Take twice daily'),
+    (1, 2, 1, 'Once before bed'),
+    (2, 3, 3, 'Every 8 hours');
+
+
+SELECT * FROM Patient;
+SELECT * FROM DOCTOR;
+SELECT * FROM Prescription;
+SELECT * FROM Medicament;
+SELECT * FROM Prescription_Medicament;
+
+SELECT TOP 1 [p].[FirstName], [p].[LastName]
+FROM [Patient] AS [p]
+WHERE [p].[IdPatient] = 1;
+
+SELECT DB_NAME() AS CurrentDb;
