@@ -47,7 +47,23 @@ namespace APBD_11.Migrations
 
                     b.HasKey("IdDoctor");
 
-                    b.ToTable("Doctors");
+                    b.ToTable("Doctor");
+
+                    b.HasData(
+                        new
+                        {
+                            IdDoctor = 1,
+                            Email = "j.doe@example.com",
+                            FirstName = "John",
+                            LastName = "Doe"
+                        },
+                        new
+                        {
+                            IdDoctor = 2,
+                            Email = "anna.smith@example.com",
+                            FirstName = "Anna",
+                            LastName = "Smith"
+                        });
                 });
 
             modelBuilder.Entity("APBD_11.Models.Medicament", b =>
@@ -75,7 +91,30 @@ namespace APBD_11.Migrations
 
                     b.HasKey("IdMedicament");
 
-                    b.ToTable("Medicaments");
+                    b.ToTable("Medicament");
+
+                    b.HasData(
+                        new
+                        {
+                            IdMedicament = 1,
+                            Description = "Pain reliever and fever reducer",
+                            Name = "Paracetamol",
+                            Type = "Tablet"
+                        },
+                        new
+                        {
+                            IdMedicament = 2,
+                            Description = "Antibiotic for infections",
+                            Name = "Amoxicillin",
+                            Type = "Capsule"
+                        },
+                        new
+                        {
+                            IdMedicament = 3,
+                            Description = "Anti-inflammatory and pain relief",
+                            Name = "Ibuprofen",
+                            Type = "Tablet"
+                        });
                 });
 
             modelBuilder.Entity("APBD_11.Models.Patient", b =>
@@ -101,7 +140,23 @@ namespace APBD_11.Migrations
 
                     b.HasKey("IdPatient");
 
-                    b.ToTable("Patients");
+                    b.ToTable("Patient");
+
+                    b.HasData(
+                        new
+                        {
+                            IdPatient = 1,
+                            Birthdate = new DateTime(1980, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Michael",
+                            LastName = "Brown"
+                        },
+                        new
+                        {
+                            IdPatient = 2,
+                            Birthdate = new DateTime(1992, 11, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Emily",
+                            LastName = "Clark"
+                        });
                 });
 
             modelBuilder.Entity("APBD_11.Models.Prescription", b =>
@@ -130,7 +185,25 @@ namespace APBD_11.Migrations
 
                     b.HasIndex("IdPatient");
 
-                    b.ToTable("Prescriptions");
+                    b.ToTable("Prescription");
+
+                    b.HasData(
+                        new
+                        {
+                            IdPrescription = 1,
+                            Date = new DateTime(2025, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueDate = new DateTime(2025, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdDoctor = 1,
+                            IdPatient = 1
+                        },
+                        new
+                        {
+                            IdPrescription = 2,
+                            Date = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueDate = new DateTime(2025, 6, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdDoctor = 2,
+                            IdPatient = 2
+                        });
                 });
 
             modelBuilder.Entity("APBD_11.Models.PrescriptionMedicament", b =>
@@ -153,7 +226,30 @@ namespace APBD_11.Migrations
 
                     b.HasIndex("IdPrescription");
 
-                    b.ToTable("Prescription_Medicament");
+                    b.ToTable("Prescription_Medicament", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            IdMedicament = 1,
+                            IdPrescription = 1,
+                            Details = "Take one tablet every 6 hours",
+                            Dose = 500
+                        },
+                        new
+                        {
+                            IdMedicament = 2,
+                            IdPrescription = 1,
+                            Details = "Take one capsule twice a day",
+                            Dose = 250
+                        },
+                        new
+                        {
+                            IdMedicament = 3,
+                            IdPrescription = 2,
+                            Details = "Take after meals",
+                            Dose = 400
+                        });
                 });
 
             modelBuilder.Entity("APBD_11.Models.Prescription", b =>
